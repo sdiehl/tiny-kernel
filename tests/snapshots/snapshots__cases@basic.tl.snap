@@ -1,0 +1,10 @@
+---
+source: tests/snapshots.rs
+expression: out
+input_file: tests/cases/basic.tl
+---
+def two : Nat := succ (succ zero)
+def three : Nat := succ (succ (succ zero))
+succ (succ zero) : Nat
+succ (succ (succ zero)) : Nat
+succ (succ (succ zero))

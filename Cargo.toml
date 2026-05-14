@@ -1,0 +1,38 @@
+[package]
+name = "tiny-kernel"
+version = "0.1.0"
+authors = ["Stephen Diehl <stephen.m.diehl@gmail.com>"]
+categories = ["algorithms"]
+edition = "2021"
+keywords = ["tutorial"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/sdiehl/tiny-kernel"
+description = "A pedagogical dependent type theory kernel with elaborator and tactics, modeled on Lean."
+
+[dependencies]
+logos = "0.16"
+thiserror = "2.0"
+
+[dev-dependencies]
+insta = { version = "1.41", features = ["glob"] }
+
+[[example]]
+name = "demo"
+path = "examples/demo.rs"
+
+[[example]]
+name = "tactic"
+path = "examples/tactic.rs"
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_debug_implementations = "warn"
+unreachable_pub = "warn"
+rust_2018_idioms = { level = "warn", priority = -1 }
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+nursery = { level = "warn", priority = -1 }
+cargo = { level = "warn", priority = -1 }

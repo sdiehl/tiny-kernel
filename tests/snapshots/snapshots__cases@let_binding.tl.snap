@@ -1,0 +1,9 @@
+---
+source: tests/snapshots.rs
+expression: out
+input_file: tests/cases/let_binding.tl
+---
+def n : Nat := succ zero
+def m : Nat := succ (succ zero)
+succ zero
+succ (succ zero)

@@ -1,0 +1,8 @@
+---
+source: tests/snapshots.rs
+expression: out
+input_file: tests/cases/tac_apply.tl
+---
+axiom imp : (A : Type) -> (B : Type) -> A -> B
+theorem t : (A : Type) -> (B : Type) -> A -> B := fun (A : Type) => fun (B : Type) => fun (a : A) => imp A B a
+t : (A : Type) -> (B : Type) -> A -> B := fun (A : Type) => fun (B : Type) => fun (a : A) => imp A B a

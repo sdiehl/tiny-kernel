@@ -1,0 +1,10 @@
+---
+source: tests/snapshots.rs
+expression: out
+input_file: tests/cases/holes.tl
+---
+def id : (A : Type) -> A -> A := fun (A : Type) => fun (x : A) => x
+def two : Nat := succ (succ zero)
+def apply_id : Nat := succ (succ zero)
+succ (succ zero) : Nat
+succ (succ zero)

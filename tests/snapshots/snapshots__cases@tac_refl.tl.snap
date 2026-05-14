@@ -1,0 +1,9 @@
+---
+source: tests/snapshots.rs
+expression: out
+input_file: tests/cases/tac_refl.tl
+---
+theorem r1 : Eq Nat zero zero := refl Nat zero
+theorem r2 : Eq Nat (succ zero) (succ zero) := refl Nat (succ zero)
+r1 : Eq Nat zero zero := refl Nat zero
+r2 : Eq Nat (succ zero) (succ zero) := refl Nat (succ zero)

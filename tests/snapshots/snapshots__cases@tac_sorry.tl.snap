@@ -1,0 +1,7 @@
+---
+source: tests/snapshots.rs
+expression: out
+input_file: tests/cases/tac_sorry.tl
+---
+theorem hole : (A : Type) -> A -> A := fun (A : Type) => fun (x : A) => ?3 A x
+hole : (A : Type) -> A -> A := fun (A : Type) => fun (x : A) => ?3 A x

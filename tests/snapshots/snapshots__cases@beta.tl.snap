@@ -1,0 +1,9 @@
+---
+source: tests/snapshots.rs
+expression: out
+input_file: tests/cases/beta.tl
+---
+def x : Nat := zero
+def y : Nat := succ zero
+zero
+succ zero
