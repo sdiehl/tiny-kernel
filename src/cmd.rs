@@ -1,7 +1,7 @@
 use crate::elab::{check, infer, zonk};
 use crate::env::{Globals, LocalCtx};
 use crate::errors::{KError, KResult};
-use crate::eval::{eval, quote, whnf};
+use crate::eval::{eval, force, quote, whnf};
 use crate::parse::parse;
 use crate::surface::Cmd;
 use crate::tactic::{run, TacticState};
@@ -110,7 +110,6 @@ pub fn run_cmd(g: &mut Globals, c: &Cmd) -> KResult<Option<String>> {
 }
 
 fn ensure_sort(g: &Globals, v: &Value) -> KResult<Level> {
-    use crate::eval::force;
     match force(g, v.clone()) {
         Value::VSort(l) => Ok(l),
         other => Err(KError::NotType(quote(g, 0, &other))),

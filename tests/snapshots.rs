@@ -1,7 +1,10 @@
+use std::fs;
+use std::path::Path;
+
 use tiny_kernel::run_program;
 
-fn run(path: &std::path::Path) -> String {
-    let src = std::fs::read_to_string(path).unwrap();
+fn run(path: &Path) -> String {
+    let src = fs::read_to_string(path).unwrap();
     match run_program(&src) {
         Ok(lines) => lines.join("\n"),
         Err(e) => format!("error: {e}"),
@@ -17,7 +20,7 @@ fn cases() {
 
 #[test]
 fn examples() {
-    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
+    let root = Path::new(env!("CARGO_MANIFEST_DIR"));
     insta::glob!(root, "examples/input/*.tk", |path| {
         insta::assert_snapshot!(run(path));
     });

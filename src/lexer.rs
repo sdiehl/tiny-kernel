@@ -1,3 +1,5 @@
+use std::ops::Range;
+
 use logos::Logos;
 
 #[derive(Logos, Debug, Clone, PartialEq, Eq)]
@@ -62,7 +64,7 @@ pub enum Tok {
     Ident(String),
 }
 
-pub fn tokenize(src: &str) -> Result<Vec<(Tok, std::ops::Range<usize>)>, String> {
+pub fn tokenize(src: &str) -> Result<Vec<(Tok, Range<usize>)>, String> {
     let mut out = Vec::new();
     let mut lex = Tok::lexer(src);
     while let Some(r) = lex.next() {

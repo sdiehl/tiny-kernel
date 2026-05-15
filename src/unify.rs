@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use crate::env::Globals;
 use crate::errors::{KError, KResult};
 use crate::eval::{apply, conv, eval, force, open, quote};
-use crate::term::{Lvl, MetaId, Term};
+use crate::term::{Level, Lvl, MetaId, Term};
 use crate::value::Value;
 
 pub fn unify(g: &mut Globals, lvl: Lvl, types: &[Value], a: &Value, b: &Value) -> KResult<()> {
@@ -68,9 +68,10 @@ pub fn unify(g: &mut Globals, lvl: Lvl, types: &[Value], a: &Value, b: &Value) -
         (Value::VFlex(m, sp), rhs) | (rhs, Value::VFlex(m, sp)) => {
             solve(g, lvl, types, m, &sp, &rhs)
         }
+        // All call sites in `elab.rs` invoke unify as `unify(.., actual, expected)`.
         (a, b) => Err(KError::TypeMismatch {
-            expected: quote(g, lvl, &a),
-            actual: quote(g, lvl, &b),
+            expected: quote(g, lvl, &b),
+            actual: quote(g, lvl, &a),
         }),
     }
 }
@@ -177,10 +178,7 @@ fn wrap_lambdas(types: &[Value], sp: &[Value], body: Term, g: &Globals, gamma: L
         let Value::VRigid(lvl, _) = force(g, v.clone()) else {
             unreachable!()
         };
-        let ty_v = types
-            .get(lvl)
-            .cloned()
-            .unwrap_or(Value::VSort(crate::term::Level::Zero));
+        let ty_v = types.get(lvl).cloned().unwrap_or(Value::VSort(Level::Zero));
         let ty_t = quote(g, gamma, &ty_v);
         t = Term::Lam(format!("x{lvl}"), Box::new(ty_t), Box::new(t));
     }
