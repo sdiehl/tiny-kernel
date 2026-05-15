@@ -1,0 +1,13 @@
+---
+source: tests/snapshots.rs
+expression: run(path)
+input_file: examples/input/universes.tk
+---
+Prop : Type
+Type : Type 1
+Type 1 : Type 2
+Type 2 : Type 3
+axiom P : Prop
+axiom T : Type
+P : Prop
+T : Type

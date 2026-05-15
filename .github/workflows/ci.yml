@@ -37,3 +37,6 @@ jobs:
 
       - name: Build release
         run: cargo build --all --release
+
+      - name: Run examples
+        run: cargo run --example run_all

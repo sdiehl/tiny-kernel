@@ -1,0 +1,11 @@
+---
+source: tests/snapshots.rs
+expression: run(path)
+input_file: examples/input/equality.tk
+---
+theorem zero_eq : Eq Nat zero zero := refl Nat zero
+theorem one_eq : Eq Nat (succ zero) (succ zero) := refl Nat (succ zero)
+theorem id_eq : (A : Type) -> (a : A) -> Eq A a a := fun (A : Type) => fun (a : A) => refl A a
+zero_eq : Eq Nat zero zero := refl Nat zero
+one_eq : Eq Nat (succ zero) (succ zero) := refl Nat (succ zero)
+id_eq : (A : Type) -> (a : A) -> Eq A a a := fun (A : Type) => fun (a : A) => refl A a

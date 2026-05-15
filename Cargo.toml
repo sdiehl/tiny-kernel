@@ -4,11 +4,11 @@ version = "0.1.0"
 authors = ["Stephen Diehl <stephen.m.diehl@gmail.com>"]
 categories = ["algorithms"]
 edition = "2021"
-keywords = ["tutorial"]
+keywords = ["typechecker"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/sdiehl/tiny-kernel"
-description = "A pedagogical dependent type theory kernel with elaborator and tactics, modeled on Lean."
+description = "A dependent type theory kernel"
 
 [dependencies]
 logos = "0.16"
@@ -18,28 +18,8 @@ thiserror = "2.0"
 insta = { version = "1.41", features = ["glob"] }
 
 [[example]]
-name = "basics"
-path = "examples/basics.rs"
-
-[[example]]
-name = "polymorphic"
-path = "examples/polymorphic.rs"
-
-[[example]]
-name = "let_bindings"
-path = "examples/let_bindings.rs"
-
-[[example]]
-name = "universes"
-path = "examples/universes.rs"
-
-[[example]]
-name = "tactics"
-path = "examples/tactics.rs"
-
-[[example]]
-name = "equality"
-path = "examples/equality.rs"
+name = "run_all"
+path = "examples/run_all.rs"
 
 [lints.rust]
 unsafe_code = "forbid"

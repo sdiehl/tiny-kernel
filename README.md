@@ -7,16 +7,14 @@ cargo build
 cargo test
 ```
 
-Examples live as `.tk` source under `examples/input/` with one-line runners in `examples/`:
+Examples live as `.tk` source under `examples/input/`. A single runner globs them all (or pass a name to run one):
 
 ```bash
-cargo run --example basics
-cargo run --example polymorphic
-cargo run --example let_bindings
-cargo run --example universes
-cargo run --example tactics
-cargo run --example equality
+cargo run --example run_all
+cargo run --example run_all -- tactics
 ```
+
+The same files are snapshotted in `tests/snapshots.rs` (`cargo insta review` after editing them).
 
 ## License
 
