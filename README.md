@@ -7,9 +7,15 @@ cargo build
 cargo test
 ```
 
+Examples live as `.tk` source under `examples/input/` with one-line runners in `examples/`:
+
 ```bash
-cargo run --example demo
-cargo run --example tactic
+cargo run --example basics
+cargo run --example polymorphic
+cargo run --example let_bindings
+cargo run --example universes
+cargo run --example tactics
+cargo run --example equality
 ```
 
 ## License

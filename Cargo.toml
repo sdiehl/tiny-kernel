@@ -18,12 +18,28 @@ thiserror = "2.0"
 insta = { version = "1.41", features = ["glob"] }
 
 [[example]]
-name = "demo"
-path = "examples/demo.rs"
+name = "basics"
+path = "examples/basics.rs"
 
 [[example]]
-name = "tactic"
-path = "examples/tactic.rs"
+name = "polymorphic"
+path = "examples/polymorphic.rs"
+
+[[example]]
+name = "let_bindings"
+path = "examples/let_bindings.rs"
+
+[[example]]
+name = "universes"
+path = "examples/universes.rs"
+
+[[example]]
+name = "tactics"
+path = "examples/tactics.rs"
+
+[[example]]
+name = "equality"
+path = "examples/equality.rs"
 
 [lints.rust]
 unsafe_code = "forbid"
