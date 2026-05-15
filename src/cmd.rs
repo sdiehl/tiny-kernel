@@ -8,30 +8,23 @@ use crate::tactic::{run, TacticState};
 use crate::term::{Level, Term};
 use crate::value::Value;
 
-pub fn prelude(g: &mut Globals) {
+pub const PRELUDE: &str = include_str!("prelude.tk");
+
+pub fn prelude(g: &mut Globals) -> KResult<()> {
     let prop = Value::VSort(Level::Zero);
     let ty = Value::VSort(Level::nat(1));
     g.add_decl("Prop".into(), Value::VSort(Level::nat(1)), Some(prop));
     g.add_decl("Type".into(), Value::VSort(Level::nat(2)), Some(ty));
 
-    let src = "\
-axiom Nat : Type\n\
-axiom zero : Nat\n\
-axiom succ : Nat -> Nat\n\
-axiom Bool : Type\n\
-axiom true : Bool\n\
-axiom false : Bool\n\
-axiom Eq : (A : Type) -> A -> A -> Prop\n\
-axiom refl : (A : Type) -> (a : A) -> Eq A a a\n\
-";
-    for c in parse(src).expect("prelude parse") {
-        run_cmd(g, &c).expect("prelude elab");
+    for c in parse(PRELUDE).map_err(|e| KError::Prelude(Box::new(e)))? {
+        run_cmd(g, &c).map_err(|e| KError::Prelude(Box::new(e)))?;
     }
+    Ok(())
 }
 
 pub fn run_program(src: &str) -> KResult<Vec<String>> {
     let mut g = Globals::new();
-    prelude(&mut g);
+    prelude(&mut g)?;
     let mut out = Vec::new();
     for c in parse(src)? {
         if let Some(line) = run_cmd(&mut g, &c)? {

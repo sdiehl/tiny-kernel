@@ -34,6 +34,9 @@ pub enum KError {
     #[error("tactic failed: {0}")]
     Tactic(String),
 
+    #[error("prelude initialization failed: {0}")]
+    Prelude(Box<KError>),
+
     #[error("{0}")]
     Other(String),
 }
