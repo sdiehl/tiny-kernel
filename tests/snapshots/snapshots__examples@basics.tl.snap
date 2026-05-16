@@ -1,7 +1,7 @@
 ---
 source: tests/snapshots.rs
 expression: run(path)
-input_file: examples/input/basics.tk
+input_file: examples/input/basics.tl
 ---
 def two : Nat := succ (succ zero)
 def three : Nat := succ (succ (succ zero))

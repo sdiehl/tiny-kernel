@@ -1,0 +1,133 @@
+use lalrpop_util::ParseError;
+
+use crate::lexer::{LexicalError, Tok};
+use crate::surface::{Cmd, Expr, Tactic};
+use crate::term::Level;
+
+grammar;
+
+pub Module: Vec<Cmd> = {
+    <cs:Cmd*> => cs,
+};
+
+Cmd: Cmd = {
+    "def" <n:Ident> <ann:(":" <Expr>)?> ":=" <body:Expr> => Cmd::Def(n, ann, body),
+    "axiom" <n:Ident> ":" <ty:Expr> => Cmd::Axiom(n, ty),
+    "theorem" <n:Ident> ":" <ty:Expr> ":=" <body:TheoremBody> => Cmd::Theorem(n, ty, body),
+    "#check" <e:Expr> => Cmd::Check(e),
+    "#eval" <e:Expr> => Cmd::Eval(e),
+    "#print" <n:Ident> => Cmd::Print(n),
+};
+
+TheoremBody: Tactic = {
+    "by" <ts:Tactics> => if ts.len() == 1 { ts.into_iter().next().unwrap() } else { Tactic::Seq(ts) },
+    <e:Expr> => Tactic::Exact(e),
+};
+
+Tactics: Vec<Tactic> = {
+    <t:Tactic> => vec![t],
+    <mut ts:Tactics> ";" <t:Tactic> => { ts.push(t); ts },
+};
+
+Tactic: Tactic = {
+    <n:Ident> =>? match n.as_str() {
+        "refl" | "rfl" => Ok(Tactic::Refl),
+        "assumption" => Ok(Tactic::Assumption),
+        "sorry" => Ok(Tactic::Sorry),
+        _ => Err(ParseError::User { error: LexicalError::UnknownTactic(n) }),
+    },
+    <n:Ident> <e:Expr> =>? match n.as_str() {
+        "intro" => match e {
+            Expr::Var(x) => Ok(Tactic::Intro(x)),
+            _ => Err(ParseError::User { error: LexicalError::BadIntroArg }),
+        },
+        "exact" => Ok(Tactic::Exact(e)),
+        "apply" => Ok(Tactic::Apply(e)),
+        _ => Err(ParseError::User { error: LexicalError::UnknownTactic(n) }),
+    },
+};
+
+pub Expr: Expr = {
+    Lambda,
+};
+
+Lambda: Expr = {
+    LetExpr,
+    "fun" <bs:FunBinders> "=>" <body:Expr> => {
+        bs.into_iter().rev().fold(body, |b, (n, t)| Expr::Lam(n, t.map(Box::new), Box::new(b)))
+    },
+};
+
+FunBinders: Vec<(String, Option<Expr>)> = {
+    <b:FunBinder> => vec![b],
+    <b:FunBinder> <rest:FunBinders> => { let mut v = vec![b]; v.extend(rest); v },
+};
+
+FunBinder: (String, Option<Expr>) = {
+    <n:Ident> => (n, None),
+    "(" <n:Ident> ":" <ty:Expr> ")" => (n, Some(ty)),
+};
+
+LetExpr: Expr = {
+    Arrow,
+    "let" <n:Ident> <ann:(":" <Expr>)?> ":=" <val:Expr> ";" <body:Expr> => {
+        Expr::Let(n, ann.map(Box::new), Box::new(val), Box::new(body))
+    },
+};
+
+Arrow: Expr = {
+    App,
+    <l:App> "->" <r:Arrow> => Expr::Arrow(Box::new(l), Box::new(r)),
+    "(" <n:Ident> ":" <ty:Expr> ")" "->" <body:Arrow> => {
+        Expr::Pi(n, Box::new(ty), Box::new(body))
+    },
+};
+
+App: Expr = {
+    Atom,
+    <f:App> <x:Atom> => Expr::App(Box::new(f), Box::new(x)),
+};
+
+Atom: Expr = {
+    <n:Ident> => Expr::Var(n),
+    "_" => Expr::Hole,
+    "Prop" => Expr::Sort(Level::Zero),
+    "Type" => Expr::Sort(Level::nat(1)),
+    "Type" <n:"NAT"> => Expr::Sort(Level::nat(n + 1)),
+    "Sort" <n:"NAT"> => Expr::Sort(Level::nat(n)),
+    "(" <e:Expr> ")" => e,
+};
+
+Ident: String = {
+    <s:"IDENT"> => s,
+};
+
+extern {
+    type Location = usize;
+    type Error = LexicalError;
+
+    enum Tok {
+        "def" => Tok::Def,
+        "axiom" => Tok::Axiom,
+        "theorem" => Tok::Theorem,
+        "fun" => Tok::Fun,
+        "let" => Tok::Let,
+        "by" => Tok::By,
+        "Prop" => Tok::Prop,
+        "Type" => Tok::TypeKw,
+        "Sort" => Tok::SortKw,
+        "#check" => Tok::Check,
+        "#eval" => Tok::Eval,
+        "#print" => Tok::Print,
+        "(" => Tok::LParen,
+        ")" => Tok::RParen,
+        ":=" => Tok::Assign,
+        ":" => Tok::Colon,
+        ";" => Tok::Semi,
+        "=>" => Tok::FatArrow,
+        "->" => Tok::Arrow,
+        "_" => Tok::Hole,
+        "NAT" => Tok::Nat(<u32>),
+        "IDENT" => Tok::Ident(<String>),
+    }
+}

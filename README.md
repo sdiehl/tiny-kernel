@@ -7,14 +7,14 @@ cargo build
 cargo test
 ```
 
-Examples live as `.tk` source under `examples/input/`. A single runner globs them all (or pass a name to run one):
+Examples live as `.tk` source under `examples/input/`.
 
 ```bash
 cargo run --example run_all
 cargo run --example run_all -- tactics
 ```
 
-The same files are snapshotted in `tests/snapshots.rs` (`cargo insta review` after editing them).
+Also has insta snapshots as a reference of expected outputs.
 
 ## License
 

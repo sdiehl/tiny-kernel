@@ -8,7 +8,7 @@ use crate::tactic::{run, TacticState};
 use crate::term::{Level, Term};
 use crate::value::Value;
 
-pub const PRELUDE: &str = include_str!("prelude.tk");
+pub const PRELUDE: &str = include_str!("prelude.tl");
 
 pub fn prelude(g: &mut Globals) -> KResult<()> {
     let prop = Value::VSort(Level::Zero);

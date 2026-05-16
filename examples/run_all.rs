@@ -1,7 +1,3 @@
-//! Runs every `.tk` source under `examples/input/`.
-//! Pass a filename (e.g. `cargo run --example run_all -- tactics`) to run just one,
-//! or an absolute path to run an arbitrary file.
-
 use std::env;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -26,7 +22,7 @@ fn main() {
         .unwrap_or_else(|e| panic!("read {}: {e}", dir.display()))
         .filter_map(Result::ok)
         .map(|e| e.path())
-        .filter(|p| p.extension().and_then(|s| s.to_str()) == Some("tk"))
+        .filter(|p| p.extension().and_then(|s| s.to_str()) == Some("tl"))
         .filter(|p| {
             filter.as_ref().is_none_or(|f| {
                 p.file_stem().and_then(|s| s.to_str()) == Some(f.as_str())
@@ -37,7 +33,7 @@ fn main() {
     paths.sort();
 
     if paths.is_empty() {
-        eprintln!("no .tk files matched in {}", dir.display());
+        eprintln!("no .tl files matched in {}", dir.display());
         process::exit(1);
     }
 

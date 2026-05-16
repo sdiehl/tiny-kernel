@@ -21,7 +21,7 @@ fn cases() {
 #[test]
 fn examples() {
     let root = Path::new(env!("CARGO_MANIFEST_DIR"));
-    insta::glob!(root, "examples/input/*.tk", |path| {
+    insta::glob!(root, "examples/input/*.tl", |path| {
         insta::assert_snapshot!(run(path));
     });
 }

@@ -1,7 +1,7 @@
 ---
 source: tests/snapshots.rs
 expression: run(path)
-input_file: examples/input/equality.tk
+input_file: examples/input/equality.tl
 ---
 theorem zero_eq : Eq Nat zero zero := refl Nat zero
 theorem one_eq : Eq Nat (succ zero) (succ zero) := refl Nat (succ zero)
