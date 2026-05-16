@@ -7,7 +7,7 @@ cargo build
 cargo test
 ```
 
-Examples live as `.tk` source under `examples/input/`.
+Examples are `.tl` files under [`examples/input/`](examples/input/). Run with:
 
 ```bash
 cargo run --example run_all
